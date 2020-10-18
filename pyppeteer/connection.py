@@ -41,7 +41,7 @@ class Connection(EventEmitter):
         self.connection: CDPSession
         self._connected = False
         self._ws = websockets.client.connect(
-            self._url, max_size=None, loop=self._loop)
+            self._url, max_size=None, loop=self._loop, ping_interval=None, ping_timeout=None)
         self._recv_fut = self._loop.create_task(self._recv_loop())
         self._closeCallback: Optional[Callable[[], None]] = None
 
@@ -191,7 +191,7 @@ class CDPSession(EventEmitter):
     * protocol events can be subscribed to with :meth:`on` method.
 
     Documentation on DevTools Protocol can be found
-    `here <https://chromedevtools.github.io/devtools-protocol/>`_.
+    `here <https://chromedevtools.github.io/devtools-protocol/>`__.
     """
 
     def __init__(self, connection: Union[Connection, 'CDPSession'],
